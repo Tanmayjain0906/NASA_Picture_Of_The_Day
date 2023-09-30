@@ -38,6 +38,12 @@ let dateData = [];
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
+    getImageOfTheDay();
+})
+
+
+function getImageOfTheDay()
+{
     currentDate = input.value;
     let obj = {
         date: currentDate,
@@ -46,7 +52,7 @@ form.addEventListener("submit", (e) => {
     localStorage.setItem("date", JSON.stringify(dateData));
     addSearchToHistory();
     getCurrentImageOfTheDay();
-})
+}
 
 
 function saveSearch(event) {
