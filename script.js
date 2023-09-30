@@ -41,7 +41,8 @@ form.addEventListener("submit", (e) => {
     let obj = {
         date: currentDate,
     }
-    localStorage.setItem("date",JSON.stringify(obj));
+    dateData.push(obj);
+    localStorage.setItem("date",JSON.stringify(dateData));
     const li = document.createElement("li");
     li.innerText = currentDate;
     li.setAttribute("onclick", "previousSearch(event)")
