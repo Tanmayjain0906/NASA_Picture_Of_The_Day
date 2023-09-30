@@ -25,11 +25,11 @@ async function getCurrentImageOfTheDay() {
             return response.json();
         })
         .then(data => {
-           
+
             addDataToUI(data);
         })
         .catch(error => {
-            
+
             console.error('Fetch error:', error);
         });
 
@@ -60,9 +60,20 @@ function getImageOfTheDay() {
     let obj = {
         date: currentDate,
     }
-    dateData.push(obj);
-    localStorage.setItem("date", JSON.stringify(dateData));
-    addSearchToHistory();
+    let flag = false;
+    for (let i = 0; i < dateData.length; i++) {
+        let check = dateData[i];
+        if (check.date === currentDate) {
+            flag = true;
+        }
+    }
+
+    if (flag === false) {
+        dateData.push(obj);
+        localStorage.setItem("date", JSON.stringify(dateData));
+        addSearchToHistory();
+    }
+
     getCurrentImageOfTheDay();
 }
 
