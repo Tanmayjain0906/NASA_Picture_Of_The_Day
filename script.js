@@ -10,18 +10,19 @@ const list = document.getElementById("previous-list");
 if (localStorage.getItem("date")) {
     localStorage.removeItem("date");
 }
-async function fetchData()
-{
-    let url = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${currentDate}`;
+
+
+async function getCurrentImageOfTheDay() {
+    let url = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${currentDate}&thumbs=true`;
 
     let response = await fetch(url);
     let data = await response.json();
 
-    
+    console.log(data);
     addDataToUI(data);
 }
 
-fetchData();
+
 
 getCurrentImageOfTheDay();
 
