@@ -15,11 +15,24 @@ if (localStorage.getItem("date")) {
 async function getCurrentImageOfTheDay() {
     let url = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${currentDate}&thumbs=true`;
 
-    let response = await fetch(url);
-    let data = await response.json();
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                alert("invalid Api Key")
+                document.body.innerHTML = `<img src="https://www.eff.org/files/2014/01/09/invalid_0.png">`
+                return;
+            }
+            return response.json();
+        })
+        .then(data => {
+           
+            addDataToUI(data);
+        })
+        .catch(error => {
+            
+            console.error('Fetch error:', error);
+        });
 
-    console.log(data);
-    addDataToUI(data);
 }
 
 
@@ -42,8 +55,7 @@ form.addEventListener("submit", (e) => {
 })
 
 
-function getImageOfTheDay()
-{
+function getImageOfTheDay() {
     currentDate = input.value;
     let obj = {
         date: currentDate,
