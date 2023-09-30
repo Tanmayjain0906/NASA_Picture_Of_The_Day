@@ -7,8 +7,7 @@ const input = document.getElementById("search-input");
 const container = document.getElementById("current-image-container");
 const list = document.getElementById("previous-list");
 
-if(localStorage.getItem("date"))
-{
+if (localStorage.getItem("date")) {
     localStorage.removeItem("date");
 }
 async function fetchData()
@@ -24,13 +23,14 @@ async function fetchData()
 
 fetchData();
 
+getCurrentImageOfTheDay();
 
-function addDataToUI(data)
-{
-   container.children[0].innerText = currentDate === new Date().toISOString().split("T")[0]?"NASA Picture Of The Day":`Picture On ${currentDate}`;
-   container.children[1].src = data.url;
-   container.children[2].innerText = data.title;
-   container.children[3].innerText = data.explanation;
+
+function addDataToUI(data) {
+    container.children[0].innerText = currentDate === new Date().toISOString().split("T")[0] ? "NASA Picture Of The Day" : `Picture On ${currentDate}`;
+    container.children[1].src = data.hdurl ? data.hdurl : data.thumbnail_url;
+    container.children[2].innerText = data.title;
+    container.children[3].innerText = data.explanation;
 }
 
 let dateData = [];
@@ -42,17 +42,25 @@ form.addEventListener("submit", (e) => {
         date: currentDate,
     }
     dateData.push(obj);
-    localStorage.setItem("date",JSON.stringify(dateData));
-    const li = document.createElement("li");
-    li.innerText = currentDate;
-    li.setAttribute("onclick", "previousSearch(event)")
-    list.appendChild(li);
-    fetchData();
+    localStorage.setItem("date", JSON.stringify(dateData));
+    addSearchToHistory();
+    getCurrentImageOfTheDay();
 })
 
 
-function previousSearch(event)
-{
+function saveSearch(event) {
     currentDate = event.target.innerText;
-    fetchData();
+    getCurrentImageOfTheDay();
+}
+
+function addSearchToHistory() {
+    list.innerHTML = "";
+    let listArr = JSON.parse(localStorage.getItem("date"));
+
+    listArr.forEach((obj) => {
+        const li = document.createElement("li");
+        li.innerText = obj.date;
+        li.setAttribute("onclick", "saveSearch(event)")
+        list.appendChild(li);
+    })
 }
